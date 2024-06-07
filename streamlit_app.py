@@ -25,18 +25,34 @@ if 'model_name' not in st.session_state:
 
 def main():
     
+    m = st.markdown("""
+    <style>
+    div.stButton > button:first-child {
+        background-color: #0099ff;
+        color:#ffffff;
+    }
+    div.stButton > button:hover {
+        background-color: #006eb8;
+        color:#ffffff;
+        }
+    </style>""", unsafe_allow_html=True)
+    
+    col1, col2 = st.columns(2)
+    
     # Load the model into session state
-    if st.button('Load Logistic Regression Model'):
-        st.session_state['model'] = load('lr_model.joblib')
-        st.session_state['encoder'] = load('lr_encoder.joblib')
-        st.session_state['model_name'] = "lr"
-        print("Logistic Regression Model loaded successfully!")
+    with col1:
+        if st.button(':bow_and_arrow: Load Logistic Regression Model'):
+            st.session_state['model'] = load('lr_model.joblib')
+            st.session_state['encoder'] = load('lr_encoder.joblib')
+            st.session_state['model_name'] = "lr"
+            print("Logistic Regression Model loaded successfully!")
         
-    if st.button('Load Decision Tree Model'):
-        st.session_state['model'] = load('dt_model.joblib')
-        st.session_state['encoder'] = load('dt_encoder.joblib')
-        st.session_state['model_name'] = "dt"
-        print("Decision Tree Model loaded successfully!")
+    with col2:
+        if st.button(':deciduous_tree: Load Decision Tree Model'):
+            st.session_state['model'] = load('dt_model.joblib')
+            st.session_state['encoder'] = load('dt_encoder.joblib')
+            st.session_state['model_name'] = "dt"
+            print("Decision Tree Model loaded successfully!")
 
     if st.session_state['model_name'] is not None:
         if (st.session_state['model_name'] == "lr"):
@@ -45,14 +61,17 @@ def main():
             st.write('Decision Tree Model Loaded!')
         
         # Create separate input sections for each feature
-        step = st.number_input('Enter Step:', value=0)
-        type = st.selectbox('Select Type:', ["CASH_IN", "CASH_OUT", "DEBIT", "PAYMENT", "TRANSFER"])
-        amount = st.number_input('Enter Amount:', value=0)
-        oldbalanceOrg = st.number_input('Enter Old Balance Orig:', value=0)
-        newbalanceOrig = st.number_input('Enter New Balance Orig:', value=0)
-        oldbalanceDest = st.number_input('Enter Old Balance Dest:', value=0)
-        newbalanceDest = st.number_input('Enter New Balance Dest:', value=0)
-        isFlaggedFraud = st.toggle("Is the transaction flagged as fraud?", value=0)
+        col3, col4 = st.columns(2)
+        with col3:
+            step = st.number_input('Enter Step:', value=0)
+            type = st.selectbox('Select Type:', ["CASH_IN", "CASH_OUT", "DEBIT", "PAYMENT", "TRANSFER"])
+            amount = st.number_input('Enter Amount:', value=0)
+            isFlaggedFraud = st.toggle("Is the transaction flagged as fraud?", value=0)
+        with col4:
+            oldbalanceOrg = st.number_input('Enter Old Balance Orig:', value=0)
+            newbalanceOrig = st.number_input('Enter New Balance Orig:', value=0)
+            oldbalanceDest = st.number_input('Enter Old Balance Dest:', value=0)
+            newbalanceDest = st.number_input('Enter New Balance Dest:', value=0)
         
         # Create a button to make predictions
         if st.button('Make Prediction'):
