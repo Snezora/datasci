@@ -20,9 +20,9 @@ if 'model' not in st.session_state:
 if 'encoder' not in st.session_state:
     st.session_state['encoder'] = None
     
-model = ""
 
 def main():
+    global model
     # Load the model into session state
     if st.button('Load Logistic Regression Model'):
         st.session_state['model'] = load('lr_model.joblib')
