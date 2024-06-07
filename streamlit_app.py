@@ -38,8 +38,11 @@ def main():
         st.session_state['model_name'] = "dt"
         print("Decision Tree Model loaded successfully!")
 
-    if st.session_state['model'] is not None:
-        st.write('Model Loaded')
+    if st.session_state['model_name'] is not None:
+        if (st.session_state['model_name'] == "lr"):
+            st.write('Logistic Regression Model Loaded!')
+        elif (st.session_state['model_name'] == "dt"):
+            st.write('Decision Tree Model Loaded!')
         
         # Create separate input sections for each feature
         step = st.number_input('Enter Step:', value=0)
