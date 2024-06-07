@@ -23,6 +23,8 @@ if 'encoder' not in st.session_state:
 
 def main():
     global model
+    model = None
+    
     # Load the model into session state
     if st.button('Load Logistic Regression Model'):
         st.session_state['model'] = load('lr_model.joblib')
