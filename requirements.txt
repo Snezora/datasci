@@ -4,3 +4,5 @@ streamlit
 numpy
 matplotlib
 scikit-learn
+joblib
+warnings
