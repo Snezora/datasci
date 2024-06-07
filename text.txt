@@ -1,0 +1,59 @@
+df = pd.read_csv("onlinefraud.csv")
+
+# Create a copy of the original dataframe
+df_lr_model = df.copy()
+
+# Normalizing the transaction types to better train the data
+from sklearn.preprocessing import LabelEncoder
+
+encoder = LabelEncoder()
+df_cat = df_lr_model['type'].values
+df_cat_encoded = encoder.fit_transform(df_cat)
+df_lr_model['type'] = encoder.fit_transform(df_lr_model['type'])
+df_lr_model = df_lr_model.drop(columns = ['nameOrig', 'nameDest'])
+
+X = df_lr_model.drop(columns=['isFraud'], axis=1)
+y = df_lr_model['isFraud'].copy()
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=1)
+
+# Standardization (Z-Score Normalization) 
+# StandardScaler for Data
+# Reference: https://www.kaggle.com/code/georgehanymilad/online-payments-fraud-detection
+
+scaler = StandardScaler()
+
+# Fit the scaler on the training data
+scaler.fit(X_train)
+
+# Transform the training and testing data
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
+
+# FOR DECISION TREE
+# To determine the max_depth of the decision tree, we will use cross-validation
+# Source: https://stackoverflow.com/questions/49289187/decision-tree-sklearn-depth-of-tree-and-accuracy
+from sklearn.model_selection import cross_val_score
+
+
+def load_dt_model():
+    L = []
+    depth_range = range(1, 21)  
+    for i in depth_range:
+        dtree = DecisionTreeClassifier(max_depth=i)
+        scores = cross_val_score(dtree, X_train, y_train, cv=5, scoring='accuracy')
+    L.append(np.mean(scores))  # Use the mean accuracy across cross-validation folds
+
+    optimal_depth = depth_range[L.index(max(L))]
+    dt_model = DecisionTreeClassifier(max_depth=19, random_state=1)
+    dt_model.fit(X_train_scaled, y_train)
+    return dt_model
+
+def load_lr_model():
+    # Load the model from disk
+    log_model = LogisticRegression()
+    log_model.fit(X_train_scaled, y_train)
+    return log_model
+
+if 'model' not in st.session_state:
+    st.session_state['model'] = None
