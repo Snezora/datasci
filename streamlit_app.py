@@ -4,13 +4,16 @@ from sklearn.metrics import confusion_matrix, roc_auc_score, roc_curve, auc
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 import streamlit as st
 from joblib import load
-from lr_model import X, scaler, y_test, X_test_scaled
 plt.ion()
 
 import warnings
 warnings.filterwarnings("ignore")
 
 st.title("Online Payments Fraud Detection")
+
+scaler = load('scaler.joblib')
+y_test = load('y_test.joblib')
+X_test_scaled = load('X_test_scaled.joblib')
 
 if 'model' not in st.session_state:
     st.session_state['model'] = None
