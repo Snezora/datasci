@@ -19,17 +19,21 @@ if 'model' not in st.session_state:
     st.session_state['model'] = None
 if 'encoder' not in st.session_state:
     st.session_state['encoder'] = None
+    
+model = ""
 
 def main():
     # Load the model into session state
     if st.button('Load Logistic Regression Model'):
         st.session_state['model'] = load('lr_model.joblib')
         st.session_state['encoder'] = load('lr_encoder.joblib')
+        model = "lr"
         print("Logistic Regression Model loaded successfully!")
         
     if st.button('Load Decision Tree Model'):
         st.session_state['model'] = load('dt_model.joblib')
         st.session_state['encoder'] = load('dt_encoder.joblib')
+        model = "dt"
         print("Decision Tree Model loaded successfully!")
 
     if st.session_state['model'] is not None:
@@ -60,6 +64,21 @@ def main():
             prediction = st.session_state['model'].predict(new_data_scaled)
             print("Prediction:", prediction)
             st.write('Prediction:', prediction)
+            
+            if (prediction == 0 and model == "lr"):
+                st.markdown('''After calculation by the model, it has determined that the transaction is :green[NOT Fraud]''')
+                st.markdown(''':blue-background[Although do be warned, this model is not that accurate. If desire an accurate model, please switch over to the Decision Tree Model]''')
+            elif (prediction == 1 and model == "lr"):
+                st.markdown('''After calculation by the model, it has determined that the transaction is :red[Fraud]''')
+                st.markdown(''':blue-background[Although do be warned, this model is not that accurate. If desire an accurate model, please switch over to the Decision Tree Model]''')
+            elif (prediction == 0 and model == "dt"):
+                st.markdown('''After calculation by the model, it has determined that the transaction is :green[NOT Fraud]''')
+            elif (prediction == 1 and model == "dt"):
+                st.markdown('''After calculation by the model, it has determined that the transaction is :red[Fraud]''')
+            else:
+                st.markdown('''Please select a model''')
+
+
             
             # Display model metrics
             st.write('Model Metrics:')
