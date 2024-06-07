@@ -1,4 +1,5 @@
 altair
 pandas
 streamlit
-matplotlib==3.3.3
+numpy
+matplotlib
