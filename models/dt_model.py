@@ -40,11 +40,6 @@ scaler.fit(X_train)
 X_train_scaled = scaler.fit_transform(X_train)
 X_test_scaled = scaler.transform(X_test)
 
-# To determine the max_depth of the decision tree, we will use k-fold cross-validation
-# Source: https://stackoverflow.com/questions/49289187/decision-tree-sklearn-depth-of-tree-and-accuracy
-# It will take about an hour to run this code, and result already printed below, so no need to run this cell
-from sklearn.model_selection import cross_val_score
-
 
 # Fit the model with the optimal max_depth, 19
 dt_model = DecisionTreeClassifier(max_depth=19, random_state=1, max_features='sqrt', min_samples_leaf=4, min_samples_split=3, criterion='gini')
