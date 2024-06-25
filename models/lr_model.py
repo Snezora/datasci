@@ -19,7 +19,7 @@ encoder = LabelEncoder()
 df_cat = df_lr_model['type'].values
 df_cat_encoded = encoder.fit_transform(df_cat)
 df_lr_model['type'] = encoder.fit_transform(df_lr_model['type'])
-df_lr_model = df_lr_model.drop(columns=['nameOrig', 'nameDest'])
+df_lr_model = df_lr_model.drop(columns=['nameOrig', 'nameDest', 'isFlaggedFraud'])
 
 X = df_lr_model.drop(columns=['isFraud'], axis=1)
 y = df_lr_model['isFraud'].copy()
