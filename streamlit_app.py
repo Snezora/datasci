@@ -66,7 +66,6 @@ def main():
             step = st.number_input('Enter Step:', value=0)
             type = st.selectbox('Select Type:', ["CASH_IN", "CASH_OUT", "DEBIT", "PAYMENT", "TRANSFER"])
             amount = st.number_input('Enter Amount:', value=0)
-            isFlaggedFraud = st.toggle("Is the transaction flagged as fraud?", value=0)
         with col4:
             oldbalanceOrg = st.number_input('Enter Old Balance Orig:', value=0)
             newbalanceOrig = st.number_input('Enter New Balance Orig:', value=0)
@@ -76,7 +75,7 @@ def main():
         # Create a button to make predictions
         if st.button('Make Prediction'):
             # Create a DataFrame with the input values
-            new_data_df = pd.DataFrame({'step': [step], 'type': [type], 'amount': [amount], 'oldbalanceOrg': [oldbalanceOrg], 'newbalanceOrig': [newbalanceOrig], 'oldbalanceDest': [oldbalanceDest], 'newbalanceDest': [newbalanceDest], 'isFlaggedFraud' : [isFlaggedFraud]})
+            new_data_df = pd.DataFrame({'step': [step], 'type': [type], 'amount': [amount], 'oldbalanceOrg': [oldbalanceOrg], 'newbalanceOrig': [newbalanceOrig], 'oldbalanceDest': [oldbalanceDest], 'newbalanceDest': [newbalanceDest]})
 
             # Encode categorical values
             new_data_df['type'] = st.session_state['encoder'].transform(new_data_df['type'])
