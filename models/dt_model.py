@@ -20,7 +20,7 @@ encoder = LabelEncoder()
 df_cat = df_dt_model['type'].values
 df_cat_encoded = encoder.fit_transform(df_cat)
 df_dt_model['type'] = encoder.fit_transform(df_dt_model['type'])
-df_dt_model = df_dt_model.drop(columns=['nameOrig', 'nameDest'])
+df_dt_model = df_dt_model.drop(columns=['nameOrig', 'nameDest', 'isFlaggedFraud'])
 
 X = df_dt_model.drop(columns=['isFraud'], axis=1)
 y = df_dt_model['isFraud'].copy()
@@ -41,7 +41,7 @@ X_train_scaled = scaler.fit_transform(X_train)
 X_test_scaled = scaler.transform(X_test)
 
 # Fit the model with the optimal max_depth, 19
-dt_model = DecisionTreeClassifier(max_depth=19, random_state=1)
+dt_model = DecisionTreeClassifier(max_depth=19, random_state=1, max_features='sqrt', min_samples_leaf=4, min_samples_split=3, criterion='gini')
 dt_model.fit(X_train_scaled, y_train)
 
 dump(dt_model, 'dt_model.joblib')
